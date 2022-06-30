@@ -9,3 +9,8 @@
 .clicked {
     background: yellow;
 }
+
+.clicked.winner {
+    background: red;
+    color:yellow;
+}
