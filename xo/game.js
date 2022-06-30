@@ -1,37 +1,33 @@
-
 let player = 'X';
+let board = [
+    'X', '', '',
+    '', '', '',
+    '', '', '0',
+​
+]
 let buttons = document.getElementsByClassName("button");
-
-let board = new Array(9).fill('');
 const NOBODY = '';
-
-function updateBoard(){
-    for (let i = 0; i < buttons.length; i++) {
-        let button = buttons[i];
-        let item = board[i];
-
-        button.textContent = item;
-    }
-    
+​
+​
+function updateBoard() {
+   for (let i = 0; i < board.length; i++) {
+      let item = board[i];
+      let button = buttons[i];
+      button.textContent = item;
+   }
 }
-
-function findWinner() {
-    if (buttons[0].textContent === buttons[1].textContent && buttons[1].textContent === buttons[2].textContent)
-        return buttons[0].textContent;
-    return NOBODY;
-}
-
-for (let i = 0; i < buttons.length; i++) {
-   
-    let button = buttons[i];
-    button.addEventListener("click", () => {
-        button.classList.add("clicked");
-        board[i] = player;
-        updateBoard();
-    });
-}
-
-document.getElementById('reset').addEventListener('click', ()=>{
-    board = Array(9).fill('');
+​
+​
+document.getElementById("reset").addEventListener("click", () => {
+    board = new Array(9).fill('');
     updateBoard();
-})
+}); 
+​
+for (let i = 0; i < buttons.length; i++) {
+   buttons[i].addEventListener("click", () => {
+       board[i] = player;
+       updateBoard();
+   }); 
+}
+​
+updateBoard();
