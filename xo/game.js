@@ -1,13 +1,18 @@
-const NOBODY = '';
+import { GameMove, GameQueue } from "./Queue.js";
+import { SideBarGameView } from "./SideBarGameView.js";
 
+export const NOBODY = '';
 const WINNING_LINES = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]
 ]
 
-class Game {
+export class Game {
     currentPlayer;
 
     constructor() {
+        this.isActive = true;
+        this.currentMove = 1;
+        this.gameQueue = new GameQueue();
         this.sessionId = new Date().getTime();
         this.views = []
         this.currentPlayer = 'X';
@@ -17,6 +22,7 @@ class Game {
             '', '', '',
             '', '', '',
         ]
+        this.gameQueue
     }
 
     attachView(view) {
@@ -26,21 +32,28 @@ class Game {
 
 
     move(index) {
-        if (this.board[index] !== NOBODY) {
+        if (!this.isActive || this.board[index] !== NOBODY) {
             return;
         }
         this.board[index] = this.currentPlayer;
+        this.gameQueue.addToQueue(new GameMove(this.currentMove, index, this.board.map(el=>el), this.currentPlayer));
         this.switchPlayer();
+        this.currentMove++;
         this.checkWinner();
         this.notifyGameUpdated();
     }
     reset() {
         this.board = new Array(9).fill('');
+        this.winningLine = [];
+        this.gameQueue.resetQueue();
+        this.currentPlayer = 'X';
+        this.currentMove = 1;
         this.notifyGameUpdated();
+        this.isActive = true;
     }
 
     getWinner() {
-        return this.winningLine.length > 0 ? this.board[this.winningLine[0]] : NOBODY;
+        return this.winningLine.length > 0 ? this.board[this.winningLine[0]] : null;
     }
 
     //Private
@@ -51,7 +64,7 @@ class Game {
     }
 
     switchPlayer() {
-        this.currentPlayer = this.currentPlayer === 'X' ? '0' : 'X';
+        this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
     }
 
     checkWinner() {
@@ -60,70 +73,31 @@ class Game {
                 this.board[line[0]] === this.board[line[1]] &&
                 this.board[line[1]] === this.board[line[2]]) {
                 this.winningLine = line;
-                console.log('Here is from if')
-            };
+                this.isActive = false;
+            } 
         })
     }
-
-}
-
-
-
-class ConsoleGameView {
-    onGameUpdated(game) {
-        console.log('New event from game #' + game.sessionId)
-        console.log(game.board)
+    undo(move) {
+        this.winningLine =[];
+        this.board = move.boardState.map(el=>el);
+        this.isActive = true;
+        this.currentPlayer = move.player;
+        this.switchPlayer();
+        this.notifyGameUpdated();
+        this.currentMove = move.boardState.filter(el=>el!== '').length+1;
     }
 }
 
-class HtmlGameView {
-    constructor() {
-        this.game = game;
-        this.buttons = document.getElementsByClassName('button');
-        this.resetButton = document.getElementById('reset');
-
-        this.resetButton.addEventListener("click", () => {
-            this.game.reset();
-        });
-
-        for (let i = 0; i < this.buttons.length; i++) {
-            this.buttons[i].addEventListener('click', () => {
-                this.game.move(i);
-            })
-        }
-    };
-
-    onGameUpdated(game) {
-        for (let i = 0; i < game.board.length; i++) {
-            let item = game.board[i];
-            let button = this.buttons[i];
-            button.textContent = item;
-            if (item !== NOBODY) {
-                button.classList.add('clicked');
-            } else {
-                button.classList.remove('clicked');
-            }
-
-            if (game.winningLine.indexOf(i) >= 0) {
-                button.classList.add('winner');
-            }
-        }
-        const winner = game.getWinner();
-        if (winner !== NOBODY) {
-            alert(winner);
-        }
-
-    }
-    
-}
-
-const game = new Game();
-// game.attachView(new ConsoleGameView());
-game.attachView(new HtmlGameView());
-game.move(1);
 
 
-/////////////////////////////////////////
+
+
+
+
+
+
+
+
 
 
 

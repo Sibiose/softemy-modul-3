@@ -1,12 +1,14 @@
 <html>
-    
-    <head>
-        <title>X si 0</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
 
-    <body>
-       <table>
+<head>
+    <title>X si 0</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main>
+        <h3 id="next-player"></h3>
+        <table>
             <tr>
                 <td>
                     <div class="button"></div>
@@ -18,7 +20,7 @@
                     <div class="button"></div>
                 </td>
             </tr>
-            
+
             <tr>
                 <td>
                     <div class="button"></div>
@@ -30,7 +32,7 @@
                     <div class="button"></div>
                 </td>
             </tr>
-            
+
             <tr>
                 <td>
                     <div class="button"></div>
@@ -42,11 +44,18 @@
                     <div class="button"></div>
                 </td>
             </tr>
-       </table>
+        </table>
 
-       <button id="reset">Reset board</button>
-
-       <script src="game.js"></script>
-    </body>
+        <button id="reset">Reset board</button>
+    </main>
+    <aside>
+        <div id="undo-container">
+            <img id="undo-btn" src="images/undo-btn2.svg" alt="Undo last move">
+        </div>
+        <ul id="move-list">
+        </ul>
+    </aside>
+    <script src="main.js" type="module"></script>
+</body>
 
 </html>
