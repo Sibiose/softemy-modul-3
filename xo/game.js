@@ -1,5 +1,3 @@
-import { GameMove, GameQueue } from "./Queue.js";
-import { SideBarGameView } from "./SideBarGameView.js";
 
 export const NOBODY = '';
 const WINNING_LINES = [
@@ -11,12 +9,11 @@ export class Game {
 
     constructor() {
         this.isActive = true;
-        this.currentMove = 1;
-        this.gameQueue = new GameQueue();
         this.sessionId = new Date().getTime();
         this.views = []
         this.currentPlayer = 'X';
         this.winningLine = [];
+        this.moveHistory = [];
         this.board = [
             '', '', '',
             '', '', '',
@@ -36,18 +33,16 @@ export class Game {
             return;
         }
         this.board[index] = this.currentPlayer;
-        this.gameQueue.addToQueue(new GameMove(this.currentMove, index, this.board.map(el=>el), this.currentPlayer));
+        this.moveHistory.push(new GameMove(index, this.board.map(el => el), this.currentPlayer));
         this.switchPlayer();
-        this.currentMove++;
         this.checkWinner();
         this.notifyGameUpdated();
     }
     reset() {
         this.board = new Array(9).fill('');
         this.winningLine = [];
-        this.gameQueue.resetQueue();
+        this.resetMoveHistory();
         this.currentPlayer = 'X';
-        this.currentMove = 1;
         this.notifyGameUpdated();
         this.isActive = true;
     }
@@ -74,20 +69,43 @@ export class Game {
                 this.board[line[1]] === this.board[line[2]]) {
                 this.winningLine = line;
                 this.isActive = false;
-            } 
+
+            }
         })
     }
-    undo(move) {
-        this.winningLine =[];
-        this.board = move.boardState.map(el=>el);
-        this.isActive = true;
+    undo() {
+        if (this.moveHistory.length > 1) {
+            this.undoTo(this.moveHistory.length - 1);
+        } else {
+            this.reset();
+        }
+    }
+
+    undoTo(nr) {
+        for (let i = this.moveHistory.length; i > nr; i--) {
+            this.moveHistory.pop();
+        }
+        let move = this.moveHistory[nr - 1];
+        this.board = move.boardState.map(el => el);
         this.currentPlayer = move.player;
+        this.winningLine = [];
+        this.isActive = true;
         this.switchPlayer();
         this.notifyGameUpdated();
-        this.currentMove = move.boardState.filter(el=>el!== '').length+1;
+    }
+
+    resetMoveHistory() {
+        this.moveHistory = [];
     }
 }
 
+class GameMove {
+    constructor(index, boardState, currentPlayer) {
+        this.index = index;
+        this.boardState = boardState;
+        this.player = currentPlayer;
+    };
+};
 
 
 
