@@ -1,4 +1,4 @@
-import { XoState } from "./Xostate"
+import { move, XoState } from "./Xostate"
 
 export const XoButton = (props: {
     state: XoState,
@@ -8,15 +8,13 @@ export const XoButton = (props: {
 }) => {
 
     const handleClick = () => {
-        const state = props.state;
-        state.board[props.index] = props.state.currentPlayer;
-        state.currentPlayer = state.currentPlayer === 'X' ? 'O' : 'X';
-        props.setState({ ...state });
+        props.setState(move(props.state, props.index));
     }
+
     let imgSrc = 'empty-image.svg';
     if (props.state.board[props.index] === 'X') {
         imgSrc = 'x-img.svg';
-    } else if (props.state.board[props.index] === 'O'){
+    } else if (props.state.board[props.index] === 'O') {
         imgSrc = 'o-img.svg'
     }
     const background = props.state.board[props.index] !== '' ? 'yellow' : ''
