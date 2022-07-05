@@ -27,7 +27,6 @@ export class Game {
         this.notifyGameUpdated();
     }
 
-
     move(index) {
         if (!this.isActive || this.board[index] !== NOBODY) {
             return;
@@ -73,6 +72,7 @@ export class Game {
             }
         })
     }
+
     undo() {
         if (this.moveHistory.length > 1) {
             this.undoTo(this.moveHistory.length - 1);
