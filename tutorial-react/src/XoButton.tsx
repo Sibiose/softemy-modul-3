@@ -3,20 +3,23 @@ import { move, XoState } from "./Xostate"
 export const XoButton = (props: {
     state: XoState,
     setState: (state: XoState) => void,
-    index: number
-
+    index: number,
 }) => {
+
 
     const handleClick = () => {
         props.setState(move(props.state, props.index));
     }
 
-    let imgSrc = 'empty-image.svg';
+    let imgSrc = 'blank-src.bmp';
     if (props.state.board[props.index] === 'X') {
         imgSrc = 'x-img.svg';
     } else if (props.state.board[props.index] === 'O') {
         imgSrc = 'o-img.svg'
+    } else {
+        imgSrc = 'blank-src.bmp';
     }
+
     const background = props.state.board[props.index] !== '' ? 'yellow' : ''
     return (
         <img src={imgSrc}

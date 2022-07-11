@@ -5,7 +5,6 @@ import { defaultXoState, XoState } from "./Xostate";
 export const XoGame = () => {
     const [state, setState] = useState<XoState>(defaultXoState);
 
-
     return (
         <>
             <h1>Next Player is {state.currentPlayer}</h1>
@@ -28,6 +27,9 @@ export const XoGame = () => {
                     </tr>
                 </tbody>
             </table>
+            <button className="reset" onClick={() => {
+                setState({ ...defaultXoState, board: new Array(9).fill("") });
+            }}>Reset button</button>
         </>
     )
 
