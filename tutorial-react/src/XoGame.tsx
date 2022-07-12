@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { XoButton } from "./XoButton"
 import { defaultXoState, XoState } from "./Xostate";
+import { move } from "./Xostate";
 
 export const XoGame = () => {
     const [state, setState] = useState<XoState>(defaultXoState);
@@ -30,6 +31,11 @@ export const XoGame = () => {
             <button className="reset" onClick={() => {
                 setState({ ...defaultXoState, board: new Array(9).fill("") });
             }}>Reset button</button>
+            <ul>
+                {state.history.map((el, i) => <li onClick={()=>{
+                    setState(move(el, el.lastTouchedSquare))
+                }} key={i}>#{i}. Player {el.currentPlayer} moved to square {el.lastTouchedSquare}</li>)}
+            </ul>
         </>
     )
 

@@ -5,6 +5,8 @@ export interface XoState {
     board: string[];
     winner: string;
     isActive: boolean;
+    lastTouchedSquare: number,
+    history: XoState[]
 }
 
 export const WINNING_LINES = [
@@ -14,7 +16,9 @@ export const defaultXoState: XoState = {
     currentPlayer: 'X',
     board: new Array(9).fill(''),
     winner: NOBODY,
-    isActive: true
+    isActive: true,
+    lastTouchedSquare: 9,
+    history: []
 }
 
 export const computeWinner = (board: string[]): string => {
@@ -32,9 +36,12 @@ export const computeWinner = (board: string[]): string => {
 export const move = (state: XoState, index: number) => {
     if (state.board[index] === NOBODY && state.winner === NOBODY) {
         const result = { ...state };
+        result.history = state.history.concat({ ...state, lastTouchedSquare: index });
         result.board[index] = state.currentPlayer;
         result.currentPlayer = state.currentPlayer === 'X' ? 'O' : 'X';
         result.winner = computeWinner(state.board);
+        result.lastTouchedSquare = index;
+        console.log(result.history);
         if (result.winner !== NOBODY) {
             result.isActive = false;
             alert(`Congratulations ${result.winner}`);
