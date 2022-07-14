@@ -1,16 +1,28 @@
 import { useState } from "react";
+import { LocaleConfig as LocaleEditor } from "./LocaleConfig";
+import { Person } from "./Person";
+import { usePerson } from "./PersonContext";
+import { PersonEditor } from "./PersonEditor";
 import { PersonView } from "./PersonView";
+import { defaultLocale, Locale, TranslateContext } from "./TranslateContext";
+
 
 function App() {
 
-  const [showPerson, setShowPerson] = useState(true);
+  const [person, setPerson] = useState<Person>({});
+  usePerson(10, setPerson);
+
+  const [locale, setLocale] = useState<Locale>(defaultLocale)
 
   return (
     <>
-      <PersonView personId={10} />
-      <button onClick={() => {
-        setShowPerson(!showPerson);
-      }}>Toggle Person</button>
+    <TranslateContext.Provider value={locale}>
+      <PersonView person={person} />
+      <br />
+      <PersonEditor person={person} setPerson={setPerson} />
+      <br />
+      <LocaleEditor setLocale={setLocale} />
+      </TranslateContext.Provider>
     </>
   );
 }

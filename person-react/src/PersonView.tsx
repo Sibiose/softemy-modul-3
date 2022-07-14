@@ -1,33 +1,15 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+
+import { useContext } from "react";
 import { Person } from "./Person";
+import { Locale, translate, TranslateContext } from "./TranslateContext";
 
 
-const usePerson = (personId: number, setPerson: (person: Person) => void) => {
+export const PersonView = (props: { person: Person }) => {
+    const locale = useContext(TranslateContext);
+    const person = props.person;
 
-    useEffect(() => {
-        const load = async () => {
-            let resp = await (await fetch(`https://reqres.in/api/users/${personId}`)).json();
-            setPerson(resp.data);
-        }
-        load();
-    }, [personId]);
-}
-
-export const PersonView = (props: { personId: number }) => {
-    const [person, setPerson] = useState<Person>({});
-
-    console.log('Rendering person view')
-
-    usePerson(props.personId, setPerson);
-
-    const inputEl = useRef<HTMLInputElement>(null);
-
-
-
-    useLayoutEffect(() => {
-        inputEl.current?.focus();
-    })
     return (<>
+        <h1>{translate(locale, 'person_information')}</h1>
         <div>{person.first_name} {person.last_name} </div>
         <div>{person.email}</div>
         <img style={{
@@ -35,7 +17,7 @@ export const PersonView = (props: { personId: number }) => {
             height: '40px'
         }}
             src={person.avatar} alt="" />
-        <input ref={inputEl} type="text" />
+
     </>
     )
 }
