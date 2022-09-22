@@ -1,0 +1,17 @@
+{
+  "users": [
+    {
+      "username": "admin",
+      "password": "admin",
+      "createdAt": 1662242155446,
+      "id": "=r6WdV7U"
+    }
+  ],
+  "products":[
+    {
+      "id":1,
+      "name": "laptop",
+      "picture" : "https://p1.akcdn.net/full/812625993.microsoft-surface-laptop-4-5bt-00069.jpg"
+    }
+  ]
+}

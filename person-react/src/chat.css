@@ -1,0 +1,26 @@
+#chat-wrapper {
+    width: 50%;
+    min-height: 600px;
+    background-color: lightblue;
+    display:flex;
+    flex-direction: column;
+    position:relative;
+    padding:1rem;
+}
+
+
+.input-div{
+    position: absolute;
+    bottom:0;
+    display:flex;
+    justify-content: center;
+    width:100%;
+    left:0;
+}
+
+button{
+    padding:1rem;
+    border-bottom-right-radius: 5px;
+    border:none;
+}
+

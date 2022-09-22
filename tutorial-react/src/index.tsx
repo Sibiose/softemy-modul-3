@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { App } from './App';
 import reportWebVitals from './reportWebVitals';
-import { XoGame } from './XoGame';
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <XoGame/>
+    <App />
   </React.StrictMode>
 );
 

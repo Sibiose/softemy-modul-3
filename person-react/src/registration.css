@@ -1,0 +1,36 @@
+#root{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.wrapper{
+    width:50%;
+    height:80vh;
+    background-color: beige;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-wrapper {
+    width:100%;
+    
+    display:grid;
+    grid-template-columns:repeat(2, 50%)
+}
+
+.col{
+    padding:1rem;
+}
+.span-2{
+    grid-column:span 2;
+    
+}
+
+input{
+    width:100%;
+}
